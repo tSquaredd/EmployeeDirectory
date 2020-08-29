@@ -6,7 +6,7 @@ import javax.inject.Inject
 class EmployeeApiImpl
 @Inject constructor(private val api: EmployeeApiService) : EmployeeApi {
     override suspend fun getEmployees(): Result<List<Employee>> = try {
-        Success(api.getEmployees())
+        Success(api.getEmployees().employees)
     } catch (error: Throwable) {
         Failure(error)
     }

@@ -16,7 +16,7 @@ import retrofit2.Retrofit
 @InstallIn(ApplicationComponent::class)
 object NetworkingModule {
 
-    private const val BASE_URL = "https://s3.amazonaws.com/sq-mobile-interview/"
+    private const val BASE_URL = "https://s3.amazonaws.com"
 
     @Provides
     fun provideHttpClient(): OkHttpClient =

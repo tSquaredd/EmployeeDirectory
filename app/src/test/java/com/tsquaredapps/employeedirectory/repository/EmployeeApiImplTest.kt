@@ -2,6 +2,7 @@ package com.tsquaredapps.employeedirectory.repository
 
 import android.util.MalformedJsonException
 import io.mockk.coEvery
+import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
@@ -22,7 +23,9 @@ internal class EmployeeApiImplTest {
 
     @Test
     fun `given api retrieves employees, then return Success`() = runBlockingTest {
-        coEvery { employeeApiService.getEmployees() } returns listOf(mockk(), mockk())
+        coEvery { employeeApiService.getEmployees() } returns mockk {
+            every { employees } returns listOf(mockk(), mockk())
+        }
 
         val result = api.getEmployees()
 
@@ -33,7 +36,9 @@ internal class EmployeeApiImplTest {
     @Test
     fun `given api retrieves no employees, then return Success with empty list`() =
         runBlockingTest {
-            coEvery { employeeApiService.getEmployees() } returns emptyList()
+            coEvery { employeeApiService.getEmployees() } returns mockk{
+                every { employees } returns emptyList()
+            }
 
             val result = api.getEmployees()
 
