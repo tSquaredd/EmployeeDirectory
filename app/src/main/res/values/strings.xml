@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">EmployeeDirectory</string>
+    <string name="employee_retrieval_error_message">We are having trouble retrieving employee records.\n\nPlease check your internet connection and try again.</string>
+    <string name="employee_list_error_image_content_description">Image of shocked bird, used for errors</string>
+    <string name="empty_employee_list_message">No entries found in the employee database.\n\nPlease try again later</string>
+    <string name="employee_list_empty_image_content_description">Image of Llama, used for empty list</string>
+    <string name="retry">Retry</string>
 </resources>

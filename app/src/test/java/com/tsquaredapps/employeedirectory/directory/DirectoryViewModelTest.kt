@@ -3,6 +3,7 @@ package com.tsquaredapps.employeedirectory.directory
 import android.util.MalformedJsonException
 import com.tsquaredapps.employeedirectory.common.BaseCoroutineViewModelTest
 import com.tsquaredapps.employeedirectory.directory.DirectoryState.*
+import com.tsquaredapps.employeedirectory.ext.assertStateOrder
 import com.tsquaredapps.employeedirectory.repository.EmployeeApi
 import com.tsquaredapps.employeedirectory.repository.Failure
 import com.tsquaredapps.employeedirectory.repository.Success
@@ -53,5 +54,15 @@ internal class DirectoryViewModelTest : BaseCoroutineViewModelTest<DirectoryStat
 
         verify(exactly = 1) { stateObserver.onChanged(capture(stateList)) }
         assertTrue { stateList.first() is ShowError }
+    }
+
+    @Test
+    fun `given api fails, when employee retries, then show loader and try again`() {
+        coEvery { employeeApi.getEmployees() } returns Success(listOf(mockk(), mockk()))
+
+        viewModel.onRetryClicked()
+
+        verify(exactly = 2) { stateObserver.onChanged(capture(stateList)) }
+        stateList.assertStateOrder(ShowLoader::class, ShowEmployees::class)
     }
 }

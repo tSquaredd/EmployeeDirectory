@@ -24,10 +24,16 @@ class DirectoryViewModel
             }
         }
     }
+
+    fun onRetryClicked() {
+        state.value = ShowLoader
+        start()
+    }
 }
 
 sealed class DirectoryState {
     class ShowEmployees(val employees: List<Employee>) : DirectoryState()
     object ShowEmptyList : DirectoryState()
     object ShowError : DirectoryState()
+    object ShowLoader : DirectoryState()
 }
