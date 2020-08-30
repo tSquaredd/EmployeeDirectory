@@ -11,6 +11,7 @@ import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
+import java.util.concurrent.TimeUnit
 
 @Module
 @InstallIn(ApplicationComponent::class)
@@ -21,6 +22,8 @@ object NetworkingModule {
     @Provides
     fun provideHttpClient(): OkHttpClient =
         OkHttpClient.Builder()
+            .readTimeout(30, TimeUnit.SECONDS)
+            .connectTimeout(30, TimeUnit.SECONDS)
             .build()
 
     @ExperimentalSerializationApi
