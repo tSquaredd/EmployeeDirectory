@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#6200EE</color>
-    <color name="colorPrimaryDark">#3700B3</color>
-    <color name="colorAccent">#03DAC5</color>
-    <color name="letterHeaderBackground">#7a7b7d</color>
-    <color name="white">#FFFFFF</color>
+    <color name="colorPrimary">#1e1e1e</color>
+    <color name="colorPrimaryDark">#000000</color>
+    <color name="colorAccent">#01cf42</color>
+    <color name="background">#1e1e1e</color>
+    <color name="textColor">#FFFFFF</color>
+    <color name="letterHeaderTextColor">@color/colorPrimary</color>
+    <color name="white">#f7f5f5</color>
 </resources>

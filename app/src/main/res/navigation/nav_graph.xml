@@ -7,5 +7,5 @@
     <fragment
         android:id="@+id/directoryFragment"
         android:name="com.tsquaredapps.employeedirectory.directory.DirectoryFragment"
-        android:label="DirectoryFragment" />
+        android:label="Directory" />
 </navigation>

@@ -20,7 +20,7 @@ class DirectoryViewModel
             when (val result = employeeApi.getEmployees()) {
                 is Success -> with(result.data) {
                     state.value = if (isEmpty()) ShowEmptyList
-                    else ShowEmployees(this.createEmployeeLetterMap())
+                    else ShowEmployees(createEmployeeLetterMap())
                 }
                 is Failure -> state.value = ShowError
             }
@@ -28,9 +28,10 @@ class DirectoryViewModel
     }
 
     private fun List<Employee>.createEmployeeLetterMap(): List<Pair<LetterHeader, List<Employee>>> =
-        sortedBy { it.fullName }.groupBy { it.fullName.first().toUpperCase() }.map {
-            LetterHeader(it.key) to it.value
-        }
+        asSequence()
+            .sortedBy { it.fullName }
+            .groupBy { it.fullName.first().toUpperCase() }
+            .map { LetterHeader(it.key) to it.value }
 
     fun onRetryClicked() {
         state.value = ShowLoader
