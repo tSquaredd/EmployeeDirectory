@@ -64,7 +64,17 @@ class DirectoryFragment : BaseFragment<FragmentDirectoryBinding>() {
             is ShowEmployees -> showEmployees(state.employees)
             is ShowEmptyList -> showAlternateView(EMPTY)
             is ShowError -> showAlternateView(ERROR)
-            is ShowLoader -> binding.progressBar.setAsVisible()
+            is ShowLoader -> showLoader()
+        }
+    }
+
+    private fun showLoader() {
+        with(binding) {
+            employeeRecyclerView.setAsGone()
+            message.setAsGone()
+            image.setAsGone()
+            retryButton.setAsGone()
+            progressBar.setAsVisible()
         }
     }
 
