@@ -1,3 +1,7 @@
 package com.tsquaredapps.employeedirectory.directory.adapter
 
-class LetterHeader(val letter: Char) : DirectoryScreenModel
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
+@Parcelize
+class LetterHeader(val letter: Char) : DirectoryScreenModel, Parcelable

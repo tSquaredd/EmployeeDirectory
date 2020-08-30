@@ -1,9 +1,12 @@
 package com.tsquaredapps.employeedirectory.model
 
+import android.os.Parcelable
 import com.tsquaredapps.employeedirectory.directory.adapter.DirectoryScreenModel
+import kotlinx.android.parcel.Parcelize
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
+@Parcelize
 @Serializable
 class Employee(
     @SerialName("uuid") val id: String,
@@ -15,7 +18,7 @@ class Employee(
     @SerialName("photo_url_large") val largePhotoUrl: String? = null,
     @SerialName("team") val team: String,
     @SerialName("employee_type") val type: EmployeeType
-) : DirectoryScreenModel
+) : DirectoryScreenModel, Parcelable
 
 @Serializable
 enum class EmployeeType {

@@ -16,15 +16,24 @@ import javax.inject.Inject
 class DirectoryViewModel
 @Inject constructor(private val employeeApi: EmployeeApi) : BaseStateViewModel<DirectoryState>() {
 
+    private var employeesByLetterList = listOf<Pair<LetterHeader, List<Employee>>>()
+
     fun start() {
-        viewModelScope.launch(Dispatchers.Main) {
-            when (val result = employeeApi.getEmployees()) {
-                is Success -> with(result.data) {
-                    state.value = if (isEmpty()) ShowEmptyList
-                    else ShowEmployees(createEmployeeLetterMap())
+        if (employeesByLetterList.isNullOrEmpty()) {
+            viewModelScope.launch(Dispatchers.Main) {
+                when (val result = employeeApi.getEmployees()) {
+                    is Success -> with(result.data) {
+                        state.value = if (isEmpty()) ShowEmptyList
+                        else {
+                            employeesByLetterList = createEmployeeLetterMap()
+                            ShowEmployees(createEmployeeLetterMap())
+                        }
+                    }
+                    is Failure -> state.value = ShowError
                 }
-                is Failure -> state.value = ShowError
             }
+        } else {
+            state.value = ShowEmployees(employeesByLetterList)
         }
     }
 
