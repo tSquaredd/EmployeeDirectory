@@ -26,6 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/margin_normal"
         android:textAlignment="center"
+        android:textColor="@color/textColor"
         android:textSize="20sp"
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@id/retryButton"
@@ -34,14 +35,16 @@
         app:layout_constraintTop_toBottomOf="@id/image"
         tools:text="@string/employee_retrieval_error_message" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/retryButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_normal"
+        style="@style/OutlineButtonStyle"
         android:layout_marginEnd="@dimen/margin_normal"
         android:layout_marginBottom="@dimen/margin_normal"
         android:text="@string/retry"
+        android:textColor="@color/textColor"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

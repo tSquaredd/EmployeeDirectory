@@ -9,6 +9,7 @@ import com.tsquaredapps.employeedirectory.repository.EmployeeApi
 import com.tsquaredapps.employeedirectory.repository.Failure
 import com.tsquaredapps.employeedirectory.repository.Success
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -35,7 +36,11 @@ class DirectoryViewModel
 
     fun onRetryClicked() {
         state.value = ShowLoader
-        start()
+        viewModelScope.launch {
+            // without delay a fast response can make it seem like no retry occured
+            delay(1000)
+            start()
+        }
     }
 }
 
