@@ -3,6 +3,7 @@ package com.tsquaredapps.employeedirectory.common
 import androidx.lifecycle.Observer
 import io.mockk.clearMocks
 import io.mockk.mockk
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import org.junit.jupiter.api.BeforeEach
@@ -21,6 +22,14 @@ abstract class BaseCoroutineViewModelTest<T> {
 
     @ExperimentalCoroutinesApi
     private val testDispatcher = TestCoroutineDispatcher()
+
+    @ExperimentalCoroutinesApi
+    val testDispatcherProvider = object : DispatcherProvider {
+        override fun default(): CoroutineDispatcher = testDispatcher
+        override fun io(): CoroutineDispatcher = testDispatcher
+        override fun main(): CoroutineDispatcher = testDispatcher
+        override fun unconfined(): CoroutineDispatcher = testDispatcher
+    }
 
     @ExperimentalCoroutinesApi
     @JvmField

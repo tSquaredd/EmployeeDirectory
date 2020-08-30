@@ -13,6 +13,8 @@ import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runBlockingTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
@@ -31,9 +33,10 @@ internal class DirectoryViewModelTest : BaseCoroutineViewModelTest<DirectoryStat
         mockk { every { fullName } returns SECOND_EMPLOYEE_NAME }
     )
 
+    @ExperimentalCoroutinesApi
     @BeforeEach
     fun beforeEach() {
-        viewModel = DirectoryViewModel(employeeApi).apply {
+        viewModel = DirectoryViewModel(employeeApi, testDispatcherProvider).apply {
             stateLiveData.observeForever(stateObserver)
         }
     }
@@ -69,16 +72,19 @@ internal class DirectoryViewModelTest : BaseCoroutineViewModelTest<DirectoryStat
         assertTrue { stateList.first() is ShowError }
     }
 
+    @ExperimentalCoroutinesApi
     @Test
-    fun `given api fails, when employee retries, then show loader and try again`() {
-        coEvery { employeeApi.getEmployees() } returns Success(employeeList)
+    fun `given api fails, when employee retries, then show loader and try again`() =
+        coroutinesTestExtension.runBlockingTest {
+            coEvery { employeeApi.getEmployees() } returns Success(employeeList)
 
-        viewModel.onRetryClicked()
+            viewModel.onRetryClicked()
+            advanceTimeBy(DirectoryViewModel.RETRY_DELAY)
 
-        verify(exactly = 2) { stateObserver.onChanged(capture(stateList)) }
-        stateList.assertStateOrder(ShowLoader::class, ShowEmployees::class)
-        (stateList[1] as ShowEmployees).employees.assertSortedEmployeeList()
-    }
+            verify(exactly = 2) { stateObserver.onChanged(capture(stateList)) }
+            stateList.assertStateOrder(ShowLoader::class, ShowEmployees::class)
+            (stateList[1] as ShowEmployees).employees.assertSortedEmployeeList()
+        }
 
     private fun List<Pair<LetterHeader, List<Employee>>>.assertSortedEmployeeList() {
         get(0).let { (letterHeader, employeeList) ->

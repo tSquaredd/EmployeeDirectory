@@ -11,10 +11,11 @@ import org.junit.jupiter.api.extension.BeforeEachCallback
 import org.junit.jupiter.api.extension.ExtensionContext
 
 @ExperimentalCoroutinesApi
-class CoroutineTestExtension(private val dispatcher: TestCoroutineDispatcher) : BeforeEachCallback,
-    AfterEachCallback, TestCoroutineScope by TestCoroutineScope(dispatcher) {
+class CoroutineTestExtension(private val testDispatcher: TestCoroutineDispatcher) :
+    BeforeEachCallback,
+    AfterEachCallback, TestCoroutineScope by TestCoroutineScope(testDispatcher) {
     override fun beforeEach(context: ExtensionContext?) {
-        Dispatchers.setMain(dispatcher)
+        Dispatchers.setMain(testDispatcher)
     }
 
     override fun afterEach(context: ExtensionContext?) {
