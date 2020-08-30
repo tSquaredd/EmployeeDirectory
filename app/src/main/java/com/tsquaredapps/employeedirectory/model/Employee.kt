@@ -1,5 +1,6 @@
 package com.tsquaredapps.employeedirectory.model
 
+import com.tsquaredapps.employeedirectory.directory.adapter.DirectoryScreenModel
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -14,7 +15,7 @@ class Employee(
     @SerialName("photo_url_large") val largePhotoUrl: String? = null,
     @SerialName("team") val team: String,
     @SerialName("employee_type") val type: EmployeeType
-)
+) : DirectoryScreenModel
 
 @Serializable
 enum class EmployeeType {

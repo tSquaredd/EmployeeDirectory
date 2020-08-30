@@ -3,6 +3,7 @@ package com.tsquaredapps.employeedirectory.directory
 import androidx.lifecycle.viewModelScope
 import com.tsquaredapps.employeedirectory.common.BaseStateViewModel
 import com.tsquaredapps.employeedirectory.directory.DirectoryState.*
+import com.tsquaredapps.employeedirectory.directory.adapter.LetterHeader
 import com.tsquaredapps.employeedirectory.model.Employee
 import com.tsquaredapps.employeedirectory.repository.EmployeeApi
 import com.tsquaredapps.employeedirectory.repository.Failure
@@ -18,12 +19,18 @@ class DirectoryViewModel
         viewModelScope.launch(Dispatchers.Main) {
             when (val result = employeeApi.getEmployees()) {
                 is Success -> with(result.data) {
-                    state.value = if (isEmpty()) ShowEmptyList else ShowEmployees(this)
+                    state.value = if (isEmpty()) ShowEmptyList
+                    else ShowEmployees(this.createEmployeeLetterMap())
                 }
                 is Failure -> state.value = ShowError
             }
         }
     }
+
+    private fun List<Employee>.createEmployeeLetterMap(): List<Pair<LetterHeader, List<Employee>>> =
+        sortedBy { it.fullName }.groupBy { it.fullName.first().toUpperCase() }.map {
+            LetterHeader(it.key) to it.value
+        }
 
     fun onRetryClicked() {
         state.value = ShowLoader
@@ -32,7 +39,7 @@ class DirectoryViewModel
 }
 
 sealed class DirectoryState {
-    class ShowEmployees(val employees: List<Employee>) : DirectoryState()
+    class ShowEmployees(val employees: List<Pair<LetterHeader, List<Employee>>>) : DirectoryState()
     object ShowEmptyList : DirectoryState()
     object ShowError : DirectoryState()
     object ShowLoader : DirectoryState()
