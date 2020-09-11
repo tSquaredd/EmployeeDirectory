@@ -23,10 +23,13 @@ class DirectoryViewModel
 
     fun start() {
         if (employeesByLetterList.isNullOrEmpty()) {
-            viewModelScope.launch(dispatchers.main()) {
-                when (val result = employeeApi.getEmployees()) {
-                    is Success -> handleSuccessfulApiResponse(result.data)
-                    is Failure -> state.value = ShowError
+            viewModelScope.launch(dispatchers.io()) {
+                val result = employeeApi.getEmployees()
+                launch(dispatchers.main()) {
+                    when (result) {
+                        is Success -> handleSuccessfulApiResponse(result.data)
+                        is Failure -> state.value = ShowError
+                    }
                 }
             }
         } else {
